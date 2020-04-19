@@ -1,0 +1,12 @@
+title 0.6: uusi muistiinpano -single page app
+
+note over selain:
+submit-napin painallus käsitelläänkin js-koodissa (preventDefault)
+muodostetaan note-json tekstistä ja Date():sta
+pushataan note js:n notes-arrayhin
+redrawNotes() renderöi näkymän uudelleen ja uusi note tulee käyttäjälle näkyviin
+lähetetään uusi note palvelimelle sendToServer-funktiolla
+end note
+
+selain->palvelin: HTTP POST {content: "test", date: "2020-04-18T07:44:32.741Z"} https://fullstack-exampleapp.herokuapp.com/new_note_spa
+palvelin->selain: response {"message":"note_created"}
