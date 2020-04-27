@@ -3,10 +3,34 @@ import ReactDOM from 'react-dom'
 
 const App = (props) => {
   const [selected, setSelected] = useState(0)
+  const [votes, setVotes] = useState(new Uint8Array(anecdotes.length))
+
+  const addVote = (vote) => {
+    const newVotes = [...votes]
+    newVotes[vote]++
+    setVotes(newVotes)
+  }
+
+  const newAnecdote = () => {
+      setSelected(Math.floor(Math.random() * props.anecdotes.length))
+  }
+
 
   return (
     <div>
+      <h3>Anecdote of the day</h3>
       {props.anecdotes[selected]}
+      <br />
+      has {votes[selected]} votes
+      <br />
+      <button onClick={()=>addVote(selected)}>vote</button>
+      <button onClick={()=>newAnecdote()}>next anecdote</button>
+
+
+      <h3>Anecdote with most votes</h3>
+      {props.anecdotes[votes.indexOf(Math.max(...votes))]}
+      <br />
+      has {Math.max(...votes)} votes
     </div>
   )
 }
@@ -25,4 +49,3 @@ ReactDOM.render(
   document.getElementById('root')
 )
 
-//export default App;
