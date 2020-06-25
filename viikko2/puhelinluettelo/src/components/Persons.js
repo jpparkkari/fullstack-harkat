@@ -1,10 +1,16 @@
 import React from 'react'
 
-const Persons = ({person}) => {
+const Persons = ({persons}) => {
     return (
-      
-        <li> {person.name} {person.number}</li>
+        <ul>
+        {persons.map((person, i) => 
+          <li key={person.name}> {person.name} {person.number} </li>  
+        )}
+      </ul>
+        
     )
+
+    
 }
 
 export default Persons

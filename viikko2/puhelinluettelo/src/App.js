@@ -1,26 +1,28 @@
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
 import Filter from './components/Filter'
 import PersonForm from './components/PersonForm'
 import Persons from './components/Persons'
+import axios from 'axios'
 
 const App = () => {
-  const [ persons, setPersons] = useState([
-    { name: 'Arto Hellas',
-      number: '1234'},
-    { name: 'Ada Lovelace',
-      number: '2345',
-  }
-  ]
-  )
+  const [ persons, setPersons] = useState([])
 
   const [ newName, setNewName ] = useState('')
   const [ newNumber, setNewNumber ] = useState('')
   const [ newFilter, setNewFilter ] = useState('')
   const [ showAll, setShowAll ] = useState(true) 
 
+  useEffect(() => {
+    axios
+      .get('http://localhost:3001/persons')
+      .then(response => {
+        setPersons(response.data)
+      })
+  }, [])
+
   const addPerson = (event) => {
     event.preventDefault()
-    console.log('button pressed', event.target)
+    //console.log('button pressed', event.target)
     if (persons.indexOf(persons.find(person => person.name === newName)) === -1) {
 
       const personObject = {
@@ -28,7 +30,14 @@ const App = () => {
         number: newNumber,
       
       }
-      setPersons(persons.concat(personObject))
+
+      axios
+        .post('http://localhost:3001/persons', personObject)
+        .then(returnedNote => {
+          setPersons(persons.concat(personObject))
+        })
+
+      
     }
     else {
       
@@ -40,13 +49,13 @@ const App = () => {
   }
 
   const handleNameChange = (event) => {
-    console.log(event.target.value)
+    //console.log(event.target.value)
     setNewName(event.target.value)
     
   }
 
   const handleNumberChange = (event) => {
-    console.log(event.target.value)
+    //console.log(event.target.value)
     setNewNumber(event.target.value)
     
   }
@@ -76,11 +85,9 @@ const App = () => {
       
       <h2>Numbers</h2>
       
-      <ul>
-        {personsToShow.map((person, i) => 
-          <Persons key={person.name} person={person} />
-        )}
-      </ul>
+      <Persons persons={personsToShow} />
+
+      
 
 
 
