@@ -3,6 +3,8 @@ import Filter from './components/Filter'
 import PersonForm from './components/PersonForm'
 import Persons from './components/Persons'
 import personService from './services/persons'
+import Notification from './components/Notification'
+import './App.css'
 
 const App = () => {
   const [ persons, setPersons] = useState([])
@@ -11,6 +13,7 @@ const App = () => {
   const [ newNumber, setNewNumber ] = useState('')
   const [ newFilter, setNewFilter ] = useState('')
   const [ showAll, setShowAll ] = useState(true) 
+  const [ message, setMessage] = useState(null)
 
   useEffect(() => {
     personService
@@ -39,6 +42,12 @@ const App = () => {
         .create(personObject)
         .then(returnedPerson => {
           setPersons(persons.concat(returnedPerson))
+          setMessage(
+            `Added '${returnedPerson.name}'`
+          )
+          setTimeout(() => {
+            setMessage(null)
+          }, 5000)
         })
 
       
@@ -52,14 +61,21 @@ const App = () => {
         .update(personFound.id, changedPerson)
         .then(returnedPerson => {
           setPersons(persons.map(person => person.id !== personFound.id ? person : returnedPerson))
+          setMessage(
+            `Updated number for '${personFound.name}'`
+          )
+          setTimeout(() => {
+            setMessage(null)
+          }, 5000)
         })
         .catch(error => {
-          alert(
-            `the person '${personFound.name}' was already deleted from server`
-          )
+          setMessage( `the person '${personFound.name}' was already deleted from server`)
+          setTimeout(() => {
+            setMessage(null)
+          }, 5000)
           setPersons(persons.filter(p => p.id !== personFound.id))
         })
-  
+       
 
         
       }
@@ -92,15 +108,22 @@ const App = () => {
 
   const deletePersonById = (id) => {
     //console.log("person " + event + " needs to be deleted" )
-    if (window.confirm("Delete person id "+ id +"?")) {
+    if (window.confirm(`Delete '${persons.find(p=>p.id===id).name}' ?`)) {
       personService
         .remove(id)
         .then(setPersons(persons.filter(p => p.id !== id)))
+        .then(          
+          setMessage(`Deleted '${persons.find(p=>p.id === id).name}'`),
+          setTimeout(() => {
+            setMessage(null)
+          }, 5000)
+        )
 
         .catch(error => {
-          alert(
-          `the person was already deleted from server`
-          )
+          setMessage(`the person was already deleted from server`)
+          setTimeout(() => {
+            setMessage(null)
+          }, 5000)
          setPersons(persons.filter(p => p.id !== id))
         })
     }
@@ -114,7 +137,7 @@ const App = () => {
     <div>
 
       <h2>Phonebook</h2>
-
+      <Notification message={message} />
       <Filter 
         value={newFilter} 
         onChange={handleFilterChange} 
