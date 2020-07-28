@@ -3,7 +3,7 @@ const Blog = require('../models/blog')
 const logger = require('../utils/logger')
 
 blogsRouter.get('', (request, response) => {
-    logger.info('got to router')
+
     Blog
       .find({})
       .then(blogs => {
