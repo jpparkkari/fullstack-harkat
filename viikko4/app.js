@@ -1,9 +1,8 @@
-const http = require('http')
 const express = require('express')
 const app = express()
-const logger = require('./utils/logger')
+//const logger = require('./utils/logger')
 const cors = require('cors')
-const config = require('./utils/config')
+//const config = require('./utils/config')
 const blogsRouter = require('./controllers/blogs')
 
 //const Blog = require('./models/blog')

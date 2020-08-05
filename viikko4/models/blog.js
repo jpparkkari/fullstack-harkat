@@ -1,6 +1,7 @@
 const mongoose = require('mongoose')
-const url = process.env.MONGODB_URI
+const config = require('../utils/config')
 const logger = require('../utils/logger')
+const url = config.MONGODB_URI
 
 logger.info('connecting to', url)
 mongoose.connect(url, { useNewUrlParser: true, useUnifiedTopology: true })
