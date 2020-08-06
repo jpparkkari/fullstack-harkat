@@ -15,7 +15,7 @@ const favoriteBlog = (blogs) => {
     (maxBlog, blog) => ( blog.likes > maxBlog.likes ? blog : maxBlog), blogs[0]
   )
   const result = `{"title": ${maxBlog.title}, "author": ${maxBlog.author}, "likes": ${maxBlog.likes}}`
-  console.log(result)
+  
   return result
   //console.log(maxBlog)
   //return maxBlog.likes

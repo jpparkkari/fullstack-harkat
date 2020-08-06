@@ -50,6 +50,35 @@ test('blogs can be added', async () => {
   //console.info('number of blogs at the end ', Object.keys(blogsAtEnd.body).length)  
 })
 
+test('likes is set to 0 if not specified', async () => {
+  const newBlog = {
+    title: 'liketest',
+    author: 'liketester',
+    url: 'www'
+  }
+
+  const savedBlog = await api
+    .post('/api/blogs')
+    .send(newBlog)
+    .expect(200)
+    .expect('Content-Type', /application\/json/)
+
+  expect(savedBlog.body.likes).toEqual(0)
+})
+
+test('no author or title returns 400 Bad Request', async () => {
+  const newBlog = {
+    
+    author: 'liketester',
+    url: 'www'
+  }
+
+  const savedBlog = await api
+    .post('/api/blogs')
+    .send(newBlog)
+    .expect(400)
+})
+
 
 afterAll(() => {
   mongoose.connection.close()

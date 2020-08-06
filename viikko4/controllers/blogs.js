@@ -1,5 +1,6 @@
 const blogsRouter = require('express').Router()
 const Blog = require('../models/blog')
+const logger = require('../utils/logger')
 //const logger = require('../utils/logger')
 
 blogsRouter.get('/', async (request, response) => {
@@ -19,7 +20,19 @@ blogsRouter.get('', (request, response) => {
 })*/
 
 blogsRouter.post('/', async (request, response) => {
-  const blog = new Blog(request.body)
+  const body = request.body
+
+  if(!body.title || !body.url) {
+    response.status(400).end()
+    return
+  }
+
+  const blog = new Blog({
+    title: body.title,
+    author: body.author,
+    url: body.url,
+    likes: body.likes || 0
+  })
 /*
   const note = new Note({
     content: body.content,
