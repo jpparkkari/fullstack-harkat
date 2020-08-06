@@ -33,13 +33,7 @@ blogsRouter.post('/', async (request, response) => {
     url: body.url,
     likes: body.likes || 0
   })
-/*
-  const note = new Note({
-    content: body.content,
-    important: body.important || false,
-    date: new Date(),
-  })
-*/
+  
   const savedBlog = await blog.save()
   response.json(savedBlog.toJSON())
 
