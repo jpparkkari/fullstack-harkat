@@ -45,7 +45,7 @@ test('blogs can be added', async () => {
 
   //const contents = blogsAtEnd.map(r => r.content)
   
-  expect(Object.keys(blogsAtEnd.body)).toHaveLength(Object.keys(blogs).length + 1)
+  expect(blogsAtEnd.body).toHaveLength(blogs.length +1)
   //console.info('number of records ', Object.keys(blogs).length)
   //console.info('number of blogs at the end ', Object.keys(blogsAtEnd.body).length)  
 })
