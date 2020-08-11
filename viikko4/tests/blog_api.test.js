@@ -79,6 +79,30 @@ test('no author or title returns 400 Bad Request', async () => {
     .expect(400)
 })
 
+test('blogs can be removed', async () => {
+  const newBlog = {
+    title: 'removetest',
+    author: 'removetester',
+    url: 'www',
+    likes: 0
+  }
+
+  const savedBlog = await api
+    .post('/api/blogs')
+    .send(newBlog)
+    .expect(200)
+    .expect('Content-Type', /application\/json/)
+
+  const id = savedBlog.body.id
+
+  await api
+    .delete(`/api/blogs/${id}`)
+    .expect(204)
+
+  const blogsAtEnd = await api.get('/api/blogs')
+  expect(blogsAtEnd.body).toHaveLength(blogs.length)
+})
+
 
 afterAll(() => {
   mongoose.connection.close()
