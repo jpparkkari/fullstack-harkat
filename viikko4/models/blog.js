@@ -2,6 +2,7 @@ const mongoose = require('mongoose')
 const config = require('../utils/config')
 const logger = require('../utils/logger')
 const url = config.MONGODB_URI
+mongoose.set('useFindAndModify', false)
 
 logger.info('connecting to', url)
 mongoose.connect(url, { useNewUrlParser: true, useUnifiedTopology: true })
