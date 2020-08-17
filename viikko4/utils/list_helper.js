@@ -29,9 +29,9 @@ const favoriteBlog = (blogs) => {
 //4.6 mostBlogs. Gets array of blogs. Returns the author with most blogs and the number of those blogs. Do also tests for this.
 const mostBlogs = (blogs) => {
  
-  const count = _.countBy(blogs, 'author')
-  const result = Object.entries(count).sort((a, b) => b[1] - a[1])
-  return { author: result[0][0], blogs: result[0][1] }
+  const max = _.chain(blogs).countBy('author').toPairs().max().value()
+  
+  return { author: max[0], blogs: max[1] }
 }
 
 //4.7 mostLikes. Gets array of blogs. Returns the author with most likes. Do also tests for this.
