@@ -10,3 +10,4 @@
    * [maiden_tiedot](https://github.com/jpparkkari/fullstack-harkat/tree/master/viikko2/maiden_tiedot)
    * [puhelinluettelo](https://github.com/jpparkkari/fullstack-harkat/tree/master/viikko2/puhelinluettelo)
 * [Part 3](https://github.com/jpparkkari/fullstack2020-part3)
+* [Part 4](https://github.com/jpparkkari/fullstack-harkat/tree/master/viikko4)
