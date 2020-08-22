@@ -9,6 +9,9 @@ const App = () => {
   const [username, setUsername] = useState('')
   const [password, setPassword] = useState('')  
   const [user, setUser] = useState(null)
+  const [title, setTitle] = useState('')
+  const [author, setAuthor] = useState('')
+  const [url, setUrl] = useState('')
 
   useEffect(() => {
     blogService.getAll().then(blogs =>
@@ -25,8 +28,28 @@ const App = () => {
     }
   }, [])
 
-  //handleLogin
-  //services/loginService.js pitää tehdä
+  const addBlog = async (event) => {
+    event.preventDefault()
+    const blogObject = {
+      title: title,
+      author: author,
+      url: url
+    }
+    try {
+      const newBlog = await blogService.create(blogObject)
+      
+      setBlogs(blogs.concat(newBlog))
+      setTitle('')
+      setAuthor('')
+      setUrl('')
+    } catch (exception) {
+      setErrorMessage('blog cannot be added')
+      setTimeout(() => {
+        setErrorMessage(null)
+      }, 5000)
+    }
+  }
+
   const handleLogin = async (event) => {
     event.preventDefault()
     console.log('logging in with', username, password)
@@ -73,16 +96,54 @@ const App = () => {
     </form></div>      
   )
 
+  const blogForm = () => (
+    <form onSubmit={addBlog}>
+      <div>
+        title
+        <input
+          value={title}
+          onChange={({ target}) => setTitle(target.value)}
+        />
+      </div>
+      <div>
+        author
+        <input 
+          value={author}
+          onChange={({ target }) => setAuthor(target.value)}
+        />
+      </div>
+      <div>
+        url
+        <input
+          value={url}
+          onChange={({ target }) => setUrl(target.value)}
+        />
+      </div>
+
+      <button type="submit">create</button>
+    </form>  
+  )
+
+  const handleLogout = (event) => {
+    event.preventDefault()
+    console.log("localstorage cleared")
+    window.localStorage.clear()
+  }
+
   const blogsList = () => (
     <div>
       <h2>blogs</h2>
-      <p>{user.name} logged in <button onClick={window.localStorage.removeItem('loggedBlogappUser')}>logout</button></p>
+      <p>{user.name} logged in <button onClick={handleLogout}>logout</button></p> 
+      <h2>create new</h2>
+      {blogForm()}
       {blogs.map(blog =>
         <Blog key={blog.id} blog={blog} />
       )}
     </div>
   )
 
+
+      //</div><button onClick={window.localStorage.removeItem('loggedBlogappUser')}>logout</button></p>
   return (
     //login form or logged users name and blogs list
     <>
