@@ -121,33 +121,7 @@ const App = () => {
         createBlog={addBlog}
       />
     </Togglable>
-    /* nämä BlogFormiin
-    <form onSubmit={addBlog}>
-      <div>
-        title
-        <input
-          value={title}
-          onChange={({ target}) => setTitle(target.value)}
-        />
-      </div>
-      <div>
-        author
-        <input 
-          value={author}
-          onChange={({ target }) => setAuthor(target.value)}
-        />
-      </div>
-      <div>
-        url
-        <input
-          value={url}
-          onChange={({ target }) => setUrl(target.value)}
-        />
-      </div>
 
-      <button type="submit">create</button>
-    </form>  
-    */
   )
 
   const handleLogout = (event) => {
@@ -162,7 +136,7 @@ const App = () => {
       <Notification message={message} />
       <p>{user.name} logged in <button onClick={handleLogout}>logout</button></p> 
       {blogForm()}
-      {blogs.map(blog =>
+      {blogs.map(blog => 
         <Blog key={blog.id} blog={blog} />
       )}
     </div>
