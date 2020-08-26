@@ -3,8 +3,10 @@ import blogService from '../services/blogs'
 
 //const fullView = true
 const Blog = ({ blog }) => {
+  const [thisBlog, setBlog] = useState(blog)
   const [fullView, setFullView] = useState(false)
   const [likes, setLikes] = useState(blog.likes)
+  
 
   const blogStyle = {
     paddingTop: 10,
@@ -16,16 +18,16 @@ const Blog = ({ blog }) => {
 
   const viewFull = () => (
     <div style={blogStyle}>
-      <div>{blog.title} {blog.author} <button onClick={handleView}>hide</button></div>
-      <div>{blog.url}</div>
+      <div>{thisBlog.title} {thisBlog.author} <button onClick={handleView}>hide</button></div>
+      <div>{thisBlog.url}</div>
       <div>likes {likes} <button onClick={handleLike}>like</button ></div>
-      <div>{blog.user != null ? blog.user.name : ''}</div>
+      <div>{thisBlog.user != null ? thisBlog.user.name : ''}</div>
     </div>
   )
 
   const viewReduced = () => (
     <div style={blogStyle}>
-      <div>{blog.title} {blog.author} <button onClick={handleView}>view</button></div>
+      <div>{thisBlog.title} {thisBlog.author} <button onClick={handleView}>view</button></div>
     </div>
   )
 
@@ -36,8 +38,11 @@ const Blog = ({ blog }) => {
 
   const handleLike = async (event) => {
     event.preventDefault()
-    const newBlog = await blogService.like(blog)
+    console.log("clicked")
+    console.log(likes)
+    const newBlog = await blogService.like(thisBlog)
     setLikes(newBlog.likes)
+    setBlog(newBlog)
   }
 
   return (
