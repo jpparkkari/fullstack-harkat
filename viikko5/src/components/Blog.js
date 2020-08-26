@@ -38,8 +38,6 @@ const Blog = ({ blog }) => {
 
   const handleLike = async (event) => {
     event.preventDefault()
-    console.log("clicked")
-    console.log(likes)
     const newBlog = await blogService.like(thisBlog)
     setLikes(newBlog.likes)
     setBlog(newBlog)
