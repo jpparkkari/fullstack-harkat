@@ -10,7 +10,6 @@ const getAll = () => {
 
 const create = async newObject => {
   const token = `bearer ${JSON.parse(window.localStorage.getItem('loggedBlogappUser')).token}`
-  console.log(token)
   const config = {
     headers: { Authorization: token },
   }
@@ -34,4 +33,12 @@ const like = async (blog) => {
   return response.data
 }
 
-export default { getAll, create, like }
+const remove = async (blog) => {
+  const token = `bearer ${JSON.parse(window.localStorage.getItem('loggedBlogappUser')).token}`
+  const config = {
+    headers: { Authorization: token },
+  }
+  return await axios.delete(baseUrl+`/${blog.id}`, config)
+}
+
+export default { getAll, create, like, remove }
