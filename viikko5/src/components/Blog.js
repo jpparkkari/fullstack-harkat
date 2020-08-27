@@ -2,7 +2,7 @@ import React, { useState } from 'react'
 import blogService from '../services/blogs'
 
 //const fullView = true
-const Blog = ({ blog, handleDelete }) => {
+const Blog = ({ blog, handleDelete, handleLikes }) => {
   const [thisBlog, setBlog] = useState(blog)
   const [fullView, setFullView] = useState(false)
   const [likes, setLikes] = useState(blog.likes)
@@ -42,6 +42,7 @@ const Blog = ({ blog, handleDelete }) => {
     const newBlog = await blogService.like(thisBlog)
     setLikes(newBlog.likes)
     setBlog(newBlog)
+    handleLikes(newBlog)
   }
 
   const handleRemove = (event) => {

@@ -133,16 +133,18 @@ const App = () => {
     window.localStorage.clear()
   }
 
+  const handleLikes = async (likedBlog) => {
+    setBlogs(blogs.filter(blog => blog.id !== likedBlog.id).concat(likedBlog).sort((a, b) => {
+      return b.likes - a.likes
+    }))
+  }
+
   const handleDelete = async (blogToBeDeleted) => {
     const confirmation = window.confirm(`Remove blog ${blogToBeDeleted.title} by ${blogToBeDeleted.author}?`)
     if(!confirmation) return
     await blogService.remove(blogToBeDeleted)
-    blogService.getAll().then(blogs => {
-      blogs.sort((a, b) => {
-        return b.likes - a.likes
-      })
-      setBlogs( blogs )
-    })  
+    setBlogs(blogs.filter(blog => blog.id !== blogToBeDeleted.id))
+
   }
 
   const blogsList = () => (
@@ -152,7 +154,7 @@ const App = () => {
       <p>{user.name} logged in <button onClick={handleLogout}>logout</button></p> 
       {blogForm()}
       {blogs.map(blog => 
-        <Blog key={blog.id} blog={blog} handleDelete={handleDelete} />
+        <Blog key={blog.id} blog={blog} handleDelete={handleDelete} handleLikes={handleLikes}/>
       )}
     </div>
   )
