@@ -19,7 +19,7 @@ const create = async newObject => {
 
 const like = async (blog) => {
   const id = blog.id
-  const updatedBlog = 
+  const updatedBlog =
     {
       user: blog.user.id,
       likes: blog.likes +1 ,
