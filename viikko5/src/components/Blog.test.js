@@ -8,10 +8,11 @@ describe('<Blog />', () => {
 
   beforeEach(() => {
     const blog = {
-      title: 'test',
+      title: 'testtitle',
       author: 'tester',
       url: 'www',
-      likes: 0
+      likes: 0,
+      user: {name: 'noname'}
     }
     const mockHandler = jest.fn()
     component = render(
@@ -20,14 +21,14 @@ describe('<Blog />', () => {
     //component.debug()
   })
 
-  test('at start the children are not displayed', () => {
+  test('at start only the author and title are shown', () => {
 
     //const div = component.container.querySelector('.togglableContent')
 
     //expect(div).toHaveStyle('display: none')
 
     expect(component.container).toHaveTextContent(
-      'test'
+      'testtitle'
     )
     expect(component.container).toHaveTextContent(
       'tester'
@@ -36,4 +37,17 @@ describe('<Blog />', () => {
       'www'
     )
   })
+
+  test('clicking the show button shows the other information', () => {
+    const button = component.getByText('view')
+    fireEvent.click(button)
+
+    expect(component.container).toHaveTextContent(
+      'www'
+    )
+    expect(component.container).toHaveTextContent(
+      'likes'
+    )
+  })
+
 })
