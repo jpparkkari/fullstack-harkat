@@ -135,7 +135,13 @@ const App = () => {
   }
 
   const handleLikes = async (likedBlog) => {
-    setBlogs(blogs.filter(blog => blog.id !== likedBlog.id).concat(likedBlog).sort((a, b) => {
+    //event.preventDefault()
+    const newBlog = await blogService.like(likedBlog)
+    newBlog.user = likedBlog.user
+    //setLikes(newBlog.likes)
+    //setBlog(newBlog)
+    //handleLikes(newBlog)
+    setBlogs(blogs.filter(blog => blog.id !== newBlog.id).concat(newBlog).sort((a, b) => {
       return b.likes - a.likes
     }))
   }
