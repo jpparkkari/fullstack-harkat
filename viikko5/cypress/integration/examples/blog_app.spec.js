@@ -41,7 +41,7 @@ describe('Blog app', function() {
   
     })
   })
-  describe.only('When logged in', function() {
+  describe('When logged in', function() {
     beforeEach(function() {
       cy.login({ username: 'tester', password: 'sekret' })
     })
@@ -74,6 +74,27 @@ describe('Blog app', function() {
         cy.get('html').should('not.contain', 'a blog created by cypress')
       })
 
+    })
+
+    describe('blogs', function() {
+      beforeEach(function() {
+        cy.createBlog({title: 'first blog', author: 'tester', url: 'www', likes: 1})
+        cy.createBlog({title: 'second blog', author: 'tester', url: 'www', likes: 3})
+        cy.createBlog({title: 'third blog', author: 'tester', url: 'www', likes: 2})
+      })
+      it('are ordered by likes descending', function() {
+        
+        cy.get('.viewButton').then( viewButtons => {
+          cy.wrap(viewButtons[0]).click()
+          cy.contains('likes 3')
+          cy.contains('hide').click()
+          cy.wrap(viewButtons[1]).click()
+          cy.contains('likes 2')
+          cy.contains('hide').click()
+          cy.wrap(viewButtons[2]).click()
+          cy.contains('likes 1')
+        })
+      })
     })
   })
 

@@ -28,7 +28,7 @@ const Blog = ({ blog, handleDelete, handleLikes }) => {
 
   const viewReduced = () => (
     <div style={blogStyle}>
-      <div>{blog.title} {blog.author} <button onClick={handleView}>view</button></div>
+      <div>{blog.title} {blog.author} <button className="viewButton" onClick={handleView}>view</button></div>
     </div>
   )
 
