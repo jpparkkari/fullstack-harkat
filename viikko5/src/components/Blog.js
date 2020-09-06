@@ -20,7 +20,7 @@ const Blog = ({ blog, handleDelete, handleLikes }) => {
     <div style={blogStyle} className="togglableContent">
       <div>{blog.title} {blog.author} <button onClick={handleView}>hide</button></div>
       <div>{blog.url}</div>
-      <div>likes {blog.likes} <button onClick={handleLike}>like</button ></div>
+      <div>likes {blog.likes} <button id="likeButton" onClick={handleLike}>like</button ></div>
       <div>{blog.user !== null ? blog.user.name : ''}</div>
       <div><button onClick={handleRemove}>remove</button></div>
     </div>
