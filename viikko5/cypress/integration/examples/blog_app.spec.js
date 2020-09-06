@@ -11,7 +11,7 @@ describe('Blog app', function() {
     cy.visit('http://localhost:3000')
   })
 
-  it('Login from is shown', function() {
+  it('Login form is shown', function() {
     cy.contains('log in to application')
   })
 
@@ -39,6 +39,20 @@ describe('Blog app', function() {
 
       cy.get('html').should('not.contain', 'testuser logged in')
   
+    })
+  })
+  describe.only('When logged in', function() {
+    beforeEach(function() {
+      cy.login({ username: 'tester', password: 'sekret' })
+    })
+
+    it('A blog can be created', function() {
+      cy.contains('new blog').click()
+      cy.get('#title').type('a blog created by cypress')
+      cy.get('#author').type('tester')
+      cy.get('#url').type('www')
+      cy.contains('create').click()
+      cy.contains('a blog created by cypress')
     })
   })
 })
