@@ -1,12 +1,12 @@
 import React from 'react'
 import '@testing-library/jest-dom/extend-expect'
-import { render, fireEvent, findAllByTitle } from '@testing-library/react'
+import { render, fireEvent } from '@testing-library/react'
 import BlogForm from './BlogForm'
 
 
 test('Correct parameters are returned with props function', () => {
   const mockHandler = jest.fn()
-  
+
   const component = render(
     <BlogForm createBlog={mockHandler} />
   )
@@ -17,13 +17,13 @@ test('Correct parameters are returned with props function', () => {
   const form = component.container.querySelector('form')
 
   fireEvent.change(title, {
-    target: {value: 'test title'}
+    target: { value: 'test title' }
   })
   fireEvent.change(author, {
-    target: {value: 'tstAuthor'}
+    target: { value: 'tstAuthor' }
   })
   fireEvent.change(url, {
-    target: {value: 'www.te.st'}
+    target: { value: 'www.te.st' }
   })
   fireEvent.submit(form)
 

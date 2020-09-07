@@ -4,23 +4,25 @@ import { render, fireEvent } from '@testing-library/react'
 import Blog from './Blog'
 
 
-
-  test('at start only the author and title are shown', () => {
+describe('Blogtests', () => {
+  let component
+  let mockLikeHandler
+  beforeEach(() => {
     const blog = {
       title: 'testtitle',
       author: 'tester',
       url: 'www',
       likes: 0,
-      user: {name: 'noname'}
+      user: { name: 'noname' }
     }
     const mockHandler = jest.fn()
-    const mockLikeHandler = jest.fn()
-    const component = render(
+    mockLikeHandler = jest.fn()
+    component = render(
       <Blog blog={blog} handleDelete={mockHandler} handleLikes={mockLikeHandler}/>
     )
-    //const div = component.container.querySelector('.togglableContent')
+  })
 
-    //expect(div).toHaveStyle('display: none')
+  test('at start only the author and title are shown', () => {
 
     expect(component.container).toHaveTextContent(
       'testtitle'
@@ -34,18 +36,6 @@ import Blog from './Blog'
   })
 
   test('clicking the show button shows the other information', () => {
-    const blog = {
-      title: 'testtitle',
-      author: 'tester',
-      url: 'www',
-      likes: 0,
-      user: {name: 'noname'}
-    }
-    const mockHandler = jest.fn()
-    const mockLikeHandler = jest.fn()
-    const component = render(
-      <Blog blog={blog} handleDelete={mockHandler} handleLikes={mockLikeHandler}/>
-    )
 
     const button = component.getByText('view')
     fireEvent.click(button)
@@ -59,27 +49,16 @@ import Blog from './Blog'
   })
 
   test('if like button is pressed twice, the event handler gets called two times', () => {
-    const blog2 = {
-      title: 'testtitle2',
-      author: 'tester2',
-      url: 'www2',
-      likes: 3,
-      user: {name: 'noname2'}
-    }
-    const mockHandler2 = jest.fn()
-    const mockLikeHandler2 = jest.fn()
-    const component = render(
-      <Blog blog={blog2} handleDelete={mockHandler2} handleLikes={mockLikeHandler2}/>
-    )
+
 
     const showButton = component.getByText('view')
     fireEvent.click(showButton)
-    
+
     const likeButton = component.getByText('like').closest('button')
     fireEvent.click(likeButton)
     fireEvent.click(likeButton)
 
-    expect(mockLikeHandler2.mock.calls).toHaveLength(2)
+    expect(mockLikeHandler.mock.calls).toHaveLength(2)
   })
 
-
+})

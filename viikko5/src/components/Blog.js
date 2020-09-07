@@ -22,7 +22,8 @@ const Blog = ({ blog, handleDelete, handleLikes }) => {
       <div>{blog.url}</div>
       <div>likes {blog.likes} <button id="likeButton" onClick={handleLike}>like</button ></div>
       <div>{blog.user !== null ? blog.user.name : ''}</div>
-      <div><button onClick={handleRemove}>remove</button></div>
+      {blog.user.username === JSON.parse(window.localStorage.getItem('loggedBlogappUser')).username
+        ? <div><button onClick={handleRemove}>remove</button></div> : ''}
     </div>
   )
 

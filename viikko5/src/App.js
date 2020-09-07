@@ -13,6 +13,7 @@ const App = () => {
   const [password, setPassword] = useState('')
   const [user, setUser] = useState(null)
   const [message, setMessage] = useState(null)
+  const [messageType, setMessageType] = useState('')
   const blogFormRef = useRef()
 
   useEffect(() => {
@@ -49,6 +50,7 @@ const App = () => {
       setMessage(
         `a new blog '${blogObject.title}' by '${blogObject.author}' added`
       )
+      setMessageType('success')
       setTimeout(() => {
         setMessage(null)
       }, 5000)
@@ -59,6 +61,7 @@ const App = () => {
         setErrorMessage(null)
       }, 5000)*/
       setMessage(exception.response.data.error)
+      setMessageType('error')
       setTimeout(() => {
         setMessage(null)
       }, 5000)
@@ -84,6 +87,7 @@ const App = () => {
         setErrorMessage(null)
       }, 5000)*/
       setMessage(exception.response.data.error)
+      setMessageType('error')
       setTimeout(() => {
         setMessage(null)
       }, 5000)
@@ -93,7 +97,7 @@ const App = () => {
   const loginForm = () => (
     <div>
       <h2>log in to application</h2>
-      <Notification message={message} />
+      <Notification message={message} type={messageType}/>
       <form onSubmit={handleLogin}>
         <div>
           username
@@ -159,7 +163,7 @@ const App = () => {
   const blogsList = () => (
     <div>
       <h2>blogs</h2>
-      <Notification message={message} />
+      <Notification message={message} type={messageType}/>
       <p>{user.name} logged in <button onClick={handleLogout}>logout</button></p>
       {blogForm()}
       {blogs.map(blog =>

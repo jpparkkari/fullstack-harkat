@@ -6,8 +6,8 @@ describe('Blog app', function() {
       username: 'tester',
       password: 'sekret'
     }
-    cy.request('POST', 'http://localhost:3001/api/users/', user) 
-    
+    cy.request('POST', 'http://localhost:3001/api/users/', user)
+
     cy.visit('http://localhost:3000')
   })
 
@@ -33,12 +33,12 @@ describe('Blog app', function() {
       cy.get('#login-button').click()
 
       cy.get('.error')
-      .should('contain', 'invalid username or password')
-      //.and('have.css', 'color', 'rgb(255, 0, 0)')
-      //.and('have.css', 'border-style', 'solid')
+        .should('contain', 'invalid username or password')
+        //.and('have.css', 'color', 'rgb(255, 0, 0)')
+        //.and('have.css', 'border-style', 'solid')
 
       cy.get('html').should('not.contain', 'testuser logged in')
-  
+
     })
   })
   describe('When logged in', function() {
@@ -78,12 +78,12 @@ describe('Blog app', function() {
 
     describe('blogs', function() {
       beforeEach(function() {
-        cy.createBlog({title: 'first blog', author: 'tester', url: 'www', likes: 1})
-        cy.createBlog({title: 'second blog', author: 'tester', url: 'www', likes: 3})
-        cy.createBlog({title: 'third blog', author: 'tester', url: 'www', likes: 2})
+        cy.createBlog({ title: 'first blog', author: 'tester', url: 'www', likes: 1 })
+        cy.createBlog({ title: 'second blog', author: 'tester', url: 'www', likes: 3 })
+        cy.createBlog({ title: 'third blog', author: 'tester', url: 'www', likes: 2 })
       })
       it('are ordered by likes descending', function() {
-        
+
         cy.get('.viewButton').then( viewButtons => {
           cy.wrap(viewButtons[0]).click()
           cy.contains('likes 3')
