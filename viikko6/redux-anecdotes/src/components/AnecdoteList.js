@@ -30,7 +30,7 @@ const AnecdoteList = () => {
         key={anecdote.id}
         anecdote={anecdote}
         onClick={() => {
-          dispatch(voteAnecdote(anecdote.id))
+          dispatch(voteAnecdote(anecdote))
           dispatch(notificationChange(`You voted anecdote '${anecdote.content}'`))
           setTimeout(() => {
             dispatch(notificationChange(''))
