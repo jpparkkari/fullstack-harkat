@@ -12,3 +12,6 @@
 * [Part 3](https://github.com/jpparkkari/fullstack2020-part3)
 * [Part 4](https://github.com/jpparkkari/fullstack-harkat/tree/master/viikko4)
 * [Part 5](https://github.com/jpparkkari/fullstack-harkat/tree/master/viikko5)
+* [Part 6](https://github.com/jpparkkari/fullstack-harkat/tree/master/viikko6)
+   * [redux-anecdotes](https://github.com/jpparkkari/fullstack-harkat/tree/master/viikko6/redux-anecdotes)
+   * [unicafe-redux](https://github.com/jpparkkari/fullstack-harkat/tree/master/viikko6/unicafe-redux)
