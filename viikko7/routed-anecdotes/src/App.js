@@ -1,7 +1,7 @@
 import React, { useState } from 'react'
 import {
   BrowserRouter as Router,
-  Switch, Route, Link, useParams
+  Switch, Route, Link, useParams, useHistory
 } from "react-router-dom"
 
 
@@ -60,7 +60,7 @@ const CreateNew = (props) => {
   const [content, setContent] = useState('')
   const [author, setAuthor] = useState('')
   const [info, setInfo] = useState('')
-
+  const history = useHistory()
 
   const handleSubmit = (e) => {
     e.preventDefault()
@@ -70,6 +70,7 @@ const CreateNew = (props) => {
       info,
       votes: 0
     })
+    history.push('/anecdotes')
   }
 
   return (
@@ -96,6 +97,7 @@ const CreateNew = (props) => {
 }
 
 const App = () => {
+  
   const [anecdotes, setAnecdotes] = useState([
     {
       content: 'If it hurts, do it more often',
@@ -118,6 +120,11 @@ const App = () => {
   const addNew = (anecdote) => {
     anecdote.id = (Math.random() * 10000).toFixed(0)
     setAnecdotes(anecdotes.concat(anecdote))
+    setNotification(`a new anecdote ${anecdote.content} created!`)
+    setTimeout(()=>{
+      setNotification('')
+    }, 10000)
+    
   }
 
   const anecdoteById = (id) =>
@@ -143,6 +150,7 @@ const App = () => {
         <Link style={padding} to='/create'>create new</Link>
         <Link style={padding} to='/about'>about</Link>
       </div>
+      <div>{notification}</div>
   
     <Switch>
       <Route path='/anecdotes/:id'>
