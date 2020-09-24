@@ -1,12 +1,8 @@
 import React, { useState } from 'react'
-//import blogService from '../services/blogs'
 import PropTypes from 'prop-types'
 
-//const fullView = true
-const Blog = ({ blog, handleDelete, handleLikes }) => {
-  //const [blog, setBlog] = useState(blog)
-  const [fullView, setFullView] = useState(false)
-  //const [likes, setLikes] = useState(blog.likes)
+const Blog = ({ blog, handleLike, handleRemove, own }) => {
+  const [visible, setVisible] = useState(false)
 
   const blogStyle = {
     paddingTop: 10,
@@ -16,53 +12,36 @@ const Blog = ({ blog, handleDelete, handleLikes }) => {
     marginBottom: 5
   }
 
-  const viewFull = () => (
-    <div style={blogStyle} className="togglableContent">
-      <div>{blog.title} {blog.author} <button onClick={handleView}>hide</button></div>
-      <div>{blog.url}</div>
-      <div>likes {blog.likes} <button id="likeButton" onClick={handleLike}>like</button ></div>
-      <div>{blog.user !== null ? blog.user.name : ''}</div>
-      {blog.user.username === JSON.parse(window.localStorage.getItem('loggedBlogappUser')).username
-        ? <div><button onClick={handleRemove}>remove</button></div> : ''}
-    </div>
-  )
-
-  const viewReduced = () => (
-    <div style={blogStyle}>
-      <div>{blog.title} {blog.author} <button className="viewButton" onClick={handleView}>view</button></div>
-    </div>
-  )
-
-  const handleView = (event) => {
-    event.preventDefault()
-    setFullView(!fullView)
-  }
-
-  const handleLike = (event) => {
-    event.preventDefault()
-
-    handleLikes(blog)
-    /*const newBlog = await blogService.like(thisBlog)
-    setLikes(newBlog.likes)
-    setBlog(newBlog)
-    handleLikes(newBlog) */
-  }
-
-  const handleRemove = (event) => {
-    event.preventDefault()
-    handleDelete(blog)
-  }
+  const label = visible ? 'hide' : 'view'
 
   return (
-    <>
-      {fullView === true ? viewFull() : viewReduced()}
-    </>
+    <div style={blogStyle} className='blog'>
+      <div>
+        <i>{blog.title}</i> by {blog.author} <button onClick={() => setVisible(!visible)}>{label}</button>
+      </div>
+      {visible&&(
+        <div>
+          <div>{blog.url}</div>
+          <div>likes {blog.likes}
+            <button onClick={() => handleLike(blog.id)}>like</button>
+          </div>
+          <div>{blog.user.name}</div>
+          {own&&<button onClick={() => handleRemove(blog.id)}>remove</button>}
+        </div>
+      )}
+    </div>
   )
 }
 
 Blog.propTypes = {
-  handleDelete: PropTypes.func.isRequired,
-  handleLikes: PropTypes.func.isRequired
+  blog: PropTypes.shape({
+    title: PropTypes.string.isRequired,
+    author: PropTypes.string.isRequired,
+    url: PropTypes.string.isRequired,
+  }).isRequired,
+  handleLike: PropTypes.func.isRequired,
+  handleRemove: PropTypes.func.isRequired,
+  own: PropTypes.bool.isRequired
 }
 
 export default Blog

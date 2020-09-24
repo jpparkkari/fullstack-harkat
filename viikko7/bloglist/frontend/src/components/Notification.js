@@ -1,16 +1,21 @@
 import React from 'react'
 
-const Notification = ({ message, type }) => {
-  if (message === null) {
+const Notification = ({ notification }) => {
+  if ( !notification ) {
     return null
   }
 
-  return (
-    //<div className="error">
-    <div className={type}>
-      {message}
-    </div>
-  )
+  const style = {
+    borderStyle: 'solid',
+    borderRadius: 5,
+    padding: 10,
+    color: notification.type === 'success' ? 'green' : 'red',
+    background: 'lightgrey'
+  }
+
+  return <div style={style}>
+    {notification.message}
+  </div>
 }
 
 export default Notification
