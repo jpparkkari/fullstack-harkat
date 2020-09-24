@@ -3,18 +3,17 @@ import Blog from './components/Blog'
 import Notification from './components/Notification'
 import Togglable from './components/Togglable'
 import NewBlog from './components/NewBlog'
-
 import blogService from './services/blogs'
 import loginService from './services/login'
 import storage from './utils/storage'
 import { newNotification } from './reducers/notificationReducer'
-import { addBlog } from './reducers/blogReducer'
-import { useDispatch, useSelector } from 'react-redux'
+import { addBlog, initializeBlogs } from './reducers/blogReducer'
+import { useSelector, useDispatch } from 'react-redux'
 
 const App = () => {
   const dispatch = useDispatch()
 
-  const [blogs, setBlogs] = useState([])
+  //const [blogs, setBlogs] = useState([])
   const [user, setUser] = useState(null)
   const [username, setUsername] = useState('')
   const [password, setPassword] = useState('')
@@ -24,15 +23,18 @@ const App = () => {
 
   useEffect(() => {
     blogService.getAll().then(blogs =>
-      setBlogs(blogs)
+      dispatch(initializeBlogs(blogs))
+      //setBlogs(blogs)
       //store.dispatch(initializeBlogs(blogs))
     )
-  }, [])
+  }, [dispatch])
 
   useEffect(() => {
     const user = storage.loadUser()
     setUser(user)
   }, [])
+
+  const blogs = useSelector(state => state.blogs)
 
   const notifyWith = (message, type='success') => {
     dispatch(newNotification({message, type}, 5))
@@ -60,8 +62,8 @@ const App = () => {
     try {
       const newBlog = await blogService.create(blog)
       blogFormRef.current.toggleVisibility()
-      setBlogs(blogs.concat(newBlog))
-      //dispatch(addBlog(blog))
+      //setBlogs(blogs.concat(newBlog))
+      dispatch(addBlog(newBlog))
       notifyWith(`a new blog '${newBlog.title}' by ${newBlog.author} added!`)
     } catch(exception) {
       console.log(exception)
@@ -71,16 +73,18 @@ const App = () => {
   const handleLike = async (id) => {
     const blogToLike = blogs.find(b => b.id === id)
     const likedBlog = { ...blogToLike, likes: blogToLike.likes + 1, user: blogToLike.user.id }
-    await blogService.update(likedBlog)
-    setBlogs(blogs.map(b => b.id === id ?  { ...blogToLike, likes: blogToLike.likes + 1 } : b))
+    console.log('blog was liked')
+    //await blogService.update(likedBlog)
+    //setBlogs(blogs.map(b => b.id === id ?  { ...blogToLike, likes: blogToLike.likes + 1 } : b))
   }
 
   const handleRemove = async (id) => {
     const blogToRemove = blogs.find(b => b.id === id)
     const ok = window.confirm(`Remove blog ${blogToRemove.title} by ${blogToRemove.author}`)
     if (ok) {
-      await blogService.remove(id)
-      setBlogs(blogs.filter(b => b.id !== id))
+      console.log('blog should be removed')
+      //await blogService.remove(id)
+      //setBlogs(blogs.filter(b => b.id !== id))
     }
   }
 
@@ -135,6 +139,7 @@ const App = () => {
         <NewBlog createBlog={createBlog} />
       </Togglable>
 
+      
       {blogs.sort(byLikes).map(blog =>
         <Blog
           key={blog.id}
@@ -149,5 +154,6 @@ const App = () => {
 }
 //kun combineReducers on tehty
 //useSelector(state => state.blogs).sort(byLikes).map(blog =>
+//oli {blogs.sort(byLikes).map(blog =>
 
 export default App
