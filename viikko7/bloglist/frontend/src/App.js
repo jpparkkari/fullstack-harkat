@@ -73,9 +73,9 @@ const App = () => {
   const handleLike = async (id) => {
     const blogToLike = blogs.find(b => b.id === id)
     const likedBlog = { ...blogToLike, likes: blogToLike.likes + 1, user: blogToLike.user.id }
-    console.log('blog was liked')
-    //await blogService.update(likedBlog)
-    //setBlogs(blogs.map(b => b.id === id ?  { ...blogToLike, likes: blogToLike.likes + 1 } : b))
+    
+    await blogService.update(likedBlog)
+    dispatch(initializeBlogs(blogs.map(b => b.id === id ?  { ...blogToLike, likes: blogToLike.likes + 1 } : b)))
   }
 
   const handleRemove = async (id) => {
@@ -83,8 +83,8 @@ const App = () => {
     const ok = window.confirm(`Remove blog ${blogToRemove.title} by ${blogToRemove.author}`)
     if (ok) {
       console.log('blog should be removed')
-      //await blogService.remove(id)
-      //setBlogs(blogs.filter(b => b.id !== id))
+      await blogService.remove(id)
+      dispatch(initializeBlogs(blogs.filter(b => b.id !== id)))
     }
   }
 
