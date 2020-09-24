@@ -1,24 +1,11 @@
 const mongoose = require('mongoose')
-const config = require('../utils/config')
-const logger = require('../utils/logger')
-const url = config.MONGODB_URI
-mongoose.set('useFindAndModify', false)
 
-logger.info('connecting to', url)
-mongoose.connect(url, { useNewUrlParser: true, useUnifiedTopology: true })
-  .then(() => {
-    logger.info('connected to MongoDB')
-  })
-  .catch((error) => {
-    logger.error('error connecting to MongoDB:', error.message)
-  })
-
-const blogSchema = new mongoose.Schema({
+const blogSchema = mongoose.Schema({
   title: String,
   author: String,
   url: String,
   likes: Number,
-  user: {
+  user:  {
     type: mongoose.Schema.Types.ObjectId,
     ref: 'User'
   }
