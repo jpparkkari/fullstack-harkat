@@ -7,8 +7,12 @@ import NewBlog from './components/NewBlog'
 import blogService from './services/blogs'
 import loginService from './services/login'
 import storage from './utils/storage'
+import { newNotification } from './reducers/notificationReducer'
+import { useDispatch, useSelector } from 'react-redux'
 
 const App = () => {
+  const dispatch = useDispatch()
+
   const [blogs, setBlogs] = useState([])
   const [user, setUser] = useState(null)
   const [username, setUsername] = useState('')
@@ -16,6 +20,7 @@ const App = () => {
   const [notification, setNotification] = useState(null)
 
   const blogFormRef = React.createRef()
+
 
   useEffect(() => {
     blogService.getAll().then(blogs =>
@@ -29,12 +34,8 @@ const App = () => {
   }, [])
 
   const notifyWith = (message, type='success') => {
-    setNotification({
-      message, type
-    })
-    setTimeout(() => {
-      setNotification(null)
-    }, 5000)
+    dispatch(newNotification({message, type}, 5))
+  
   }
 
   const handleLogin = async (event) => {
@@ -91,7 +92,7 @@ const App = () => {
       <div>
         <h2>login to application</h2>
 
-        <Notification notification={notification} />
+        <Notification />
 
         <form onSubmit={handleLogin}>
           <div>
