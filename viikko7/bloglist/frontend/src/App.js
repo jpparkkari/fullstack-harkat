@@ -8,6 +8,7 @@ import blogService from './services/blogs'
 import loginService from './services/login'
 import storage from './utils/storage'
 import { newNotification } from './reducers/notificationReducer'
+import { addBlog } from './reducers/blogReducer'
 import { useDispatch, useSelector } from 'react-redux'
 
 const App = () => {
@@ -17,14 +18,14 @@ const App = () => {
   const [user, setUser] = useState(null)
   const [username, setUsername] = useState('')
   const [password, setPassword] = useState('')
-  const [notification, setNotification] = useState(null)
-
+  
   const blogFormRef = React.createRef()
 
 
   useEffect(() => {
     blogService.getAll().then(blogs =>
       setBlogs(blogs)
+      //store.dispatch(initializeBlogs(blogs))
     )
   }, [])
 
@@ -60,6 +61,7 @@ const App = () => {
       const newBlog = await blogService.create(blog)
       blogFormRef.current.toggleVisibility()
       setBlogs(blogs.concat(newBlog))
+      //dispatch(addBlog(blog))
       notifyWith(`a new blog '${newBlog.title}' by ${newBlog.author} added!`)
     } catch(exception) {
       console.log(exception)
@@ -123,7 +125,7 @@ const App = () => {
     <div>
       <h2>blogs</h2>
 
-      <Notification notification={notification} />
+      <Notification />
 
       <p>
         {user.name} logged in <button onClick={handleLogout}>logout</button>
@@ -145,5 +147,7 @@ const App = () => {
     </div>
   )
 }
+//kun combineReducers on tehty
+//useSelector(state => state.blogs).sort(byLikes).map(blog =>
 
 export default App
