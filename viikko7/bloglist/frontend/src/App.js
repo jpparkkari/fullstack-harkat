@@ -5,11 +5,17 @@ import Togglable from './components/Togglable'
 import NewBlog from './components/NewBlog'
 import blogService from './services/blogs'
 import loginService from './services/login'
+import usersService from './services/users'
 import storage from './utils/storage'
 import { newNotification } from './reducers/notificationReducer'
 import { addBlog, initializeBlogs } from './reducers/blogReducer'
+import { initializeUsers } from './reducers/usersReducer'
 import { useSelector, useDispatch } from 'react-redux'
 import { setUser } from './reducers/userReducer'
+import {
+  BrowserRouter as Router,
+  Switch, Route, Link
+} from "react-router-dom"
 
 const App = () => {
   const dispatch = useDispatch()
@@ -26,6 +32,8 @@ const App = () => {
     blogService.getAll().then(blogs =>
       dispatch(initializeBlogs(blogs))
     )
+    usersService.getAll().then(users =>
+      dispatch(initializeUsers(users)))
   }, [dispatch])
 
   useEffect(() => {
@@ -39,6 +47,7 @@ const App = () => {
 
   const user = useSelector(state => state.user)
   const blogs = useSelector(state => state.blogs)
+  const users = useSelector(state => state.users)
 
   const notifyWith = (message, type='success') => {
     dispatch(newNotification({message, type}, 5))
@@ -56,9 +65,7 @@ const App = () => {
       //muuta tämä reduxiin
       //tee userReducer
       storage.saveUser(user)
-      console.log(user)
       dispatch(setUser(user))
-      console.log(user)
       notifyWith(`${user.name} welcome back!`)
       
     } catch(exception) {
@@ -135,7 +142,7 @@ const App = () => {
   const byLikes = (b1, b2) => b2.likes - b1.likes
 
   return (
-    <div>
+    <Router>
       <h2>blogs</h2>
 
       <Notification />
@@ -144,21 +151,32 @@ const App = () => {
         {user.name} logged in <button onClick={handleLogout}>logout</button>
       </p>
 
-      <Togglable buttonLabel='create new blog'  ref={blogFormRef}>
-        <NewBlog createBlog={createBlog} />
-      </Togglable>
+      <Switch>
+        <Route path="/users">
+          <h3>Users</h3>
+          <table>
+            <tr><th></th><th>blogs created</th></tr>
+            {users.map(user => <tr><td>{user.name}</td> <td>{user.blogs.length}</td></tr>)}
+          </table>
+        </Route>        
+        <Route path="/">
+          <Togglable buttonLabel='create new blog'  ref={blogFormRef}>
+            <NewBlog createBlog={createBlog} />
+          </Togglable>
 
       
-      {blogs.sort(byLikes).map(blog =>
-        <Blog
-          key={blog.id}
-          blog={blog}
-          handleLike={handleLike}
-          handleRemove={handleRemove}
-          own={user.username===blog.user.username}
-        />
-      )}
-    </div>
+          {blogs.sort(byLikes).map(blog =>
+            <Blog
+              key={blog.id}
+              blog={blog}
+              handleLike={handleLike}
+              handleRemove={handleRemove}
+              own={user.username===blog.user.username}
+            />
+          )}
+        </Route>
+      </Switch>
+    </Router>
   )
 }
 //kun combineReducers on tehty
