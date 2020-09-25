@@ -9,12 +9,13 @@ import storage from './utils/storage'
 import { newNotification } from './reducers/notificationReducer'
 import { addBlog, initializeBlogs } from './reducers/blogReducer'
 import { useSelector, useDispatch } from 'react-redux'
+import { setUser } from './reducers/userReducer'
 
 const App = () => {
   const dispatch = useDispatch()
 
   //const [blogs, setBlogs] = useState([])
-  const [user, setUser] = useState(null)
+  //const [user, setUser] = useState(null)
   const [username, setUsername] = useState('')
   const [password, setPassword] = useState('')
   
@@ -24,16 +25,19 @@ const App = () => {
   useEffect(() => {
     blogService.getAll().then(blogs =>
       dispatch(initializeBlogs(blogs))
-      //setBlogs(blogs)
-      //store.dispatch(initializeBlogs(blogs))
     )
   }, [dispatch])
 
   useEffect(() => {
+    //muuta tämä reduxiin
     const user = storage.loadUser()
-    setUser(user)
-  }, [])
+    console.log(user)
+    if (user) {
+      dispatch(setUser(user))
+    }
+  }, [dispatch])
 
+  const user = useSelector(state => state.user)
   const blogs = useSelector(state => state.blogs)
 
   const notifyWith = (message, type='success') => {
@@ -47,12 +51,16 @@ const App = () => {
       const user = await loginService.login({
         username, password
       })
-
       setUsername('')
       setPassword('')
-      setUser(user)
-      notifyWith(`${user.name} welcome back!`)
+      //muuta tämä reduxiin
+      //tee userReducer
       storage.saveUser(user)
+      console.log(user)
+      dispatch(setUser(user))
+      console.log(user)
+      notifyWith(`${user.name} welcome back!`)
+      
     } catch(exception) {
       notifyWith('wrong username/password', 'error')
     }
@@ -89,7 +97,8 @@ const App = () => {
   }
 
   const handleLogout = () => {
-    setUser(null)
+    //tee reducerilla
+    dispatch(setUser(null))
     storage.logoutUser()
   }
 

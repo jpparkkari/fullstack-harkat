@@ -4,6 +4,7 @@ import { composeWithDevTools } from 'redux-devtools-extension'
 import thunk from 'redux-thunk'
 import notificationReducer from './reducers/notificationReducer'
 import blogReducer from './reducers/blogReducer'
+import userReducer from './reducers/userReducer'
 
 //combineReducers
 //notificationReducer
@@ -11,7 +12,8 @@ import blogReducer from './reducers/blogReducer'
 //+userReducer
 const reducer = combineReducers({
   notification: notificationReducer,
-  blogs: blogReducer
+  blogs: blogReducer,
+  user: userReducer
 })
 
 const store = createStore(
