@@ -6,12 +6,17 @@ import { Provider } from 'react-redux'
 import notificationReducer from './reducers/notificationReducer'
 import { composeWithDevTools } from 'redux-devtools-extension'
 import store from './store'
+import {
+  BrowserRouter as Router
+} from "react-router-dom"
 
 //const store = createStore(notificationReducer, composeWithDevTools())
 
 ReactDOM.render(
   <Provider store={store}>
-    <App />
+    <Router>
+      <App />
+    </Router>
   </Provider>, 
   document.getElementById('root')
   

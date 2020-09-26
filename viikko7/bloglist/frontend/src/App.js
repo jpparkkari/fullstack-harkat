@@ -14,8 +14,11 @@ import { useSelector, useDispatch } from 'react-redux'
 import { setUser } from './reducers/userReducer'
 import {
   BrowserRouter as Router,
-  Switch, Route, Link
+  Switch, Route, Link,
+  useParams, useRouteMatch
 } from "react-router-dom"
+
+
 
 const App = () => {
   const dispatch = useDispatch()
@@ -109,6 +112,11 @@ const App = () => {
     storage.logoutUser()
   }
 
+  const match = useRouteMatch('/users/:id')
+  const matchUser = match 
+    ? users.find(user => user.id === (match.params.id))
+    : null
+
   if ( !user ) {
     return (
       <div>
@@ -141,6 +149,34 @@ const App = () => {
 
   const byLikes = (b1, b2) => b2.likes - b1.likes
 
+  const User = () => {
+    if(!matchUser) {
+      return null
+    }
+
+    //const id = useParams().id
+    //const found_id = users.find(user => user.id === id)
+    //console.log(id)
+    //console.log(found_id)
+    if (user != null) {
+      const name = matchUser.name
+      console.log("name:", name)
+      return (
+        <>
+          <h2>Name: {name}</h2>
+          <b>added blogs</b>
+          <ul>
+            {matchUser.blogs.map(blog => 
+              <li key={blog.id}>{blog.title}</li>
+            )}
+          </ul>
+        </>
+      )}
+    return
+  }
+
+
+
   return (
     <Router>
       <h2>blogs</h2>
@@ -152,11 +188,23 @@ const App = () => {
       </p>
 
       <Switch>
+        <Route path="/users/:id">
+          <User user={matchUser}/>
+        </Route>
         <Route path="/users">
           <h3>Users</h3>
           <table>
-            <tr><th></th><th>blogs created</th></tr>
-            {users.map(user => <tr><td>{user.name}</td> <td>{user.blogs.length}</td></tr>)}
+            <thead>
+              <tr><th></th><th>blogs created</th></tr>
+            </thead>
+            <tbody>
+              {users.map(user => 
+                <tr key={user.id}>
+                  <td><Link to={`/users/${user.id}`}>{user.name}</Link></td> 
+                  <td>{user.blogs.length}</td>
+                </tr>
+              )}
+            </tbody>
           </table>
         </Route>        
         <Route path="/">
