@@ -188,6 +188,12 @@ const App = () => {
         <a href={matchBlog.url}>{matchBlog.url}</a>
         <div>{matchBlog.likes} likes <button onClick={() => handleLike(matchBlog.id)}>like</button></div>
         <div>added by {matchBlog.author}</div>
+        <h3>comments:</h3>
+        <ul>
+          {matchBlog.comments.map((comment, index) =>
+            <li key={index}>{comment}</li>
+          )}
+        </ul>
       </>
     )
 
