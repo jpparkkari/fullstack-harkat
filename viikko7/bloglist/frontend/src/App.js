@@ -42,7 +42,6 @@ const App = () => {
   useEffect(() => {
     //muuta tämä reduxiin
     const user = storage.loadUser()
-    console.log(user)
     if (user) {
       dispatch(setUser(user))
     }
@@ -162,9 +161,9 @@ const App = () => {
     //const found_id = users.find(user => user.id === id)
     //console.log(id)
     //console.log(found_id)
-    if (user != null) {
+    
       const name = matchUser.name
-      console.log("name:", name)
+      console.log("name::", name)
       return (
         <>
           <h2>{name}</h2>
@@ -175,8 +174,7 @@ const App = () => {
             )}
           </ul>
         </>
-      )}
-    return
+      )
   }
 
   const BlogPage =() => {
@@ -195,9 +193,16 @@ const App = () => {
 
   }
 
+  const padding = {
+    padding: 5
+  }
 
   return (
     <Router>
+      <div>
+        <Link style={padding} to="/">blogs</Link>
+        <Link style={padding} to="/users">users</Link>
+      </div>
       <h2>blogs</h2>
 
       <Notification />
