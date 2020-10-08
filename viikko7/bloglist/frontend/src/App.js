@@ -3,6 +3,7 @@ import Blog from './components/Blog'
 import Notification from './components/Notification'
 import Togglable from './components/Togglable'
 import NewBlog from './components/NewBlog'
+import CommentForm from './components/CommentForm'
 import blogService from './services/blogs'
 import loginService from './services/login'
 import usersService from './services/users'
@@ -27,6 +28,7 @@ const App = () => {
   //const [user, setUser] = useState(null)
   const [username, setUsername] = useState('')
   const [password, setPassword] = useState('')
+  const [comment, setComment] = useState('')
   
   const blogFormRef = React.createRef()
 
@@ -82,6 +84,23 @@ const App = () => {
       //setBlogs(blogs.concat(newBlog))
       dispatch(addBlog(newBlog))
       notifyWith(`a new blog '${newBlog.title}' by ${newBlog.author} added!`)
+    } catch(exception) {
+      console.log(exception)
+    }
+  }
+
+  const sendComment = async (comment) => {
+    //event.preventDefault()
+    const id = matchBlog.id
+    try {
+      const newComment = {"comment" : comment}
+      await blogService.comment(newComment, id)
+      setComment('')
+      notifyWith(`you commented blog id ${id} with comment ${comment}`)
+      dispatch(initializeBlogs(blogs.map(b => b.id === id
+        ? {...matchBlog, comments: matchBlog.comments.concat(comment)}
+        : b
+        )))
     } catch(exception) {
       console.log(exception)
     }
@@ -189,6 +208,12 @@ const App = () => {
         <div>{matchBlog.likes} likes <button onClick={() => handleLike(matchBlog.id)}>like</button></div>
         <div>added by {matchBlog.author}</div>
         <h3>comments:</h3>
+        <CommentForm 
+          setComment = {setComment}
+          sendComment = {sendComment}
+          id = {matchBlog.id}
+        />
+        
         <ul>
           {matchBlog.comments.map((comment, index) =>
             <li key={index}>{comment}</li>
@@ -238,7 +263,7 @@ const App = () => {
           </table>
         </Route>
         <Route path="/blogs/:id">
-          <BlogPage/>
+          <BlogPage />
         </Route>        
         <Route path="/">
           <Togglable buttonLabel='create new blog'  ref={blogFormRef}>
