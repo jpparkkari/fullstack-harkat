@@ -17,7 +17,7 @@ import { setUser } from './reducers/userReducer'
 import {
   BrowserRouter as Router,
   Switch, Route, Link,
-  useParams, useRouteMatch
+  useRouteMatch
 } from "react-router-dom"
 import {
   Container,
@@ -44,7 +44,6 @@ const App = () => {
   //const [user, setUser] = useState(null)
   const [username, setUsername] = useState('')
   const [password, setPassword] = useState('')
-  const [comment, setComment] = useState('')
   
   const blogFormRef = React.createRef()
 
@@ -112,7 +111,6 @@ const App = () => {
     try {
       const newComment = {"comment" : comment}
       await blogService.comment(newComment, id)
-      setComment('')
       notifyWith(`you commented blog id ${id} with comment ${comment}`)
       dispatch(initializeBlogs(blogs.map(b => b.id === id
         ? {...matchBlog, comments: matchBlog.comments.concat(comment)}
@@ -225,7 +223,6 @@ const App = () => {
         <div>added by {matchBlog.author}</div>
         <h3>comments:</h3>
         <CommentForm 
-          setComment = {setComment}
           sendComment = {sendComment}
           id = {matchBlog.id}
         />
