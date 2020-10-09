@@ -1,5 +1,6 @@
 import React from 'react'
 import ReactDOM from 'react-dom'
+import Container from '@material-ui/core/Container'
 import App from './App'
 import { Provider } from 'react-redux'
 import store from './store'
@@ -8,11 +9,13 @@ import {
 } from "react-router-dom"
 
 ReactDOM.render(
-  <Provider store={store}>
-    <Router>
-      <App />
-    </Router>
-  </Provider>, 
+  <Container>
+    <Provider store={store}>
+      <Router>
+        <App />
+      </Router>
+    </Provider>
+  </Container>, 
   document.getElementById('root')
   
 )

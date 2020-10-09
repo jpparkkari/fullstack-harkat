@@ -1,9 +1,11 @@
 import React, { useState, useEffect } from 'react'
+import Container from '@material-ui/core/Container'
 import Blog from './components/Blog'
 import Notification from './components/Notification'
 import Togglable from './components/Togglable'
 import NewBlog from './components/NewBlog'
 import CommentForm from './components/CommentForm'
+import Users from './components/Users'
 import blogService from './services/blogs'
 import loginService from './services/login'
 import usersService from './services/users'
@@ -226,60 +228,49 @@ const App = () => {
   }
 
   return (
-    <Router>
-      <div>
-        <Link style={padding} to="/">blogs</Link>
-        <Link style={padding} to="/users">users</Link>
-      </div>
-      <h2>blogs</h2>
+    <Container>
+      <Router>
+        <div>
+          <Link style={padding} to="/">blogs</Link>
+          <Link style={padding} to="/users">users</Link>
+        </div>
+        <h2>blogs</h2>
 
-      <Notification />
+        <Notification />
 
-      <p>
-        {user.name} logged in <button onClick={handleLogout}>logout</button>
-      </p>
+        <p>
+          {user.name} logged in <button onClick={handleLogout}>logout</button>
+        </p>
 
-      <Switch>
-        <Route path="/users/:id">
-          <User user={matchUser}/>
-        </Route>
-        <Route path="/users">
-          <h3>Users</h3>
-          <table>
-            <thead>
-              <tr><th></th><th>blogs created</th></tr>
-            </thead>
-            <tbody>
-              {users.map(user => 
-                <tr key={user.id}>
-                  <td><Link to={`/users/${user.id}`}>{user.name}</Link></td> 
-                  <td>{user.blogs.length}</td>
-                </tr>
-              )}
-            </tbody>
-          </table>
-        </Route>
-        <Route path="/blogs/:id">
-          <BlogPage />
-        </Route>        
-        <Route path="/">
-          <Togglable buttonLabel='create new blog'  ref={blogFormRef}>
-            <NewBlog createBlog={createBlog} />
-          </Togglable>
+        <Switch>
+          <Route path="/users/:id">
+            <User user={matchUser}/>
+          </Route>
+          <Route path="/users">
+            <Users users={users} />
+          </Route>
+          <Route path="/blogs/:id">
+            <BlogPage />
+          </Route>        
+          <Route path="/">
+            <Togglable buttonLabel='create new blog'  ref={blogFormRef}>
+              <NewBlog createBlog={createBlog} />
+            </Togglable>
 
-      
-          {blogs.sort(byLikes).map(blog =>
-            <Blog
-              key={blog.id}
-              blog={blog}
-              handleLike={handleLike}
-              handleRemove={handleRemove}
-              own={user.username===blog.user.username}
-            />
-          )}
-        </Route>
-      </Switch>
-    </Router>
+        
+            {blogs.sort(byLikes).map(blog =>
+              <Blog
+                key={blog.id}
+                blog={blog}
+                handleLike={handleLike}
+                handleRemove={handleRemove}
+                own={user.username===blog.user.username}
+              />
+            )}
+          </Route>
+        </Switch>
+      </Router>
+    </Container>
   )
 }
 //kun combineReducers on tehty
