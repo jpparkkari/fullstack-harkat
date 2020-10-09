@@ -1,5 +1,4 @@
 import React, { useState, useEffect } from 'react'
-import Container from '@material-ui/core/Container'
 import Blog from './components/Blog'
 import Notification from './components/Notification'
 import Togglable from './components/Togglable'
@@ -20,6 +19,21 @@ import {
   Switch, Route, Link,
   useRouteMatch
 } from "react-router-dom"
+import {
+  Container,
+  Table,
+  TableBody,
+  TableCell,
+  TableContainer,
+  TableRow,
+  Paper,
+  Button,
+  TextField,
+  List,
+  ListItem,
+  ListItemText
+} from '@material-ui/core'
+import { lightBlue } from '@material-ui/core/colors'
 
 
 
@@ -53,6 +67,7 @@ const App = () => {
   const user = useSelector(state => state.user)
   const blogs = useSelector(state => state.blogs)
   const users = useSelector(state => state.users)
+
 
   const notifyWith = (message, type='success') => {
     dispatch(newNotification({message, type}, 5))
@@ -130,14 +145,15 @@ const App = () => {
     storage.logoutUser()
   }
 
-  const match = useRouteMatch('/users/:id')
-  const matchUser = match 
-    ? users.find(user => user.id === (match.params.id))
+  const userMatch = useRouteMatch('/users/:id')
+  const matchUser = userMatch 
+    ? users.find(u => user.id === (userMatch.params.id))
     : null
   const blogMatch = useRouteMatch('/blogs/:id')
   const matchBlog = blogMatch
-    ? blogs.find(user => user.id === (blogMatch.params.id))
+    ? blogs.find(b => b.id === (blogMatch.params.id))
     : null
+
 
   if ( !user ) {
     return (
@@ -147,27 +163,31 @@ const App = () => {
         <Notification />
 
         <form onSubmit={handleLogin}>
-          <div>
-            username
-            <input
-              id='username'
+        <div>
+            
+            <TextField
+              label='username'
               value={username}
               onChange={({ target }) => setUsername(target.value)}
             />
           </div>
           <div>
-            password
-            <input
-              id='password'
+            
+            <TextField
+              label='password'
               value={password}
               onChange={({ target }) => setPassword(target.value)}
             />
           </div>
-          <button id='login'>login</button>
+          <div>
+            <Button variant='contained' color='primary' id='login' type='submit'>login</Button>
+          </div>
         </form>
       </div>
     )
   }
+
+
 
   const byLikes = (b1, b2) => b2.likes - b1.likes
 
@@ -175,25 +195,19 @@ const App = () => {
     if(!matchUser) {
       return null
     }
-
-    //const id = useParams().id
-    //const found_id = users.find(user => user.id === id)
-    //console.log(id)
-    //console.log(found_id)
     
-      const name = matchUser.name
-      console.log("name::", name)
-      return (
-        <>
-          <h2>{name}</h2>
-          <b>added blogs</b>
-          <ul>
-            {matchUser.blogs.map(blog => 
-              <li key={blog.id}>{blog.title}</li>
-            )}
-          </ul>
-        </>
-      )
+    const name = matchUser.name
+    return (
+      <>
+        <h2>{name}</h2>
+        <b>added blogs</b>
+        <List>
+          {matchUser.blogs.map(blog => 
+            <ListItem key={blog.id}><ListItemText primary={blog.title} /></ListItem>
+          )}
+        </List>
+      </>
+    )
   }
 
   const BlogPage =() => {
@@ -244,7 +258,7 @@ const App = () => {
 
         <Switch>
           <Route path="/users/:id">
-            <User user={matchUser}/>
+            <User />
           </Route>
           <Route path="/users">
             <Users users={users} />
