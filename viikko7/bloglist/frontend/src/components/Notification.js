@@ -1,5 +1,6 @@
 import React from 'react'
 import { useSelector } from 'react-redux'
+import { Alert } from '@material-ui/lab'
 
 const Notification = () => {
 
@@ -18,10 +19,15 @@ const Notification = () => {
   }
   
 
-  return <div style={style}>
-    
-    {notification.message}
-    
+  return <div>
+    {(notification.type === 'success' ?
+      <Alert severity="success">
+        {notification.message}
+      </Alert> :
+      <Alert severity="error">
+        {notification.message}
+      </Alert>
+    )}    
   </div>
 }
 

@@ -10,7 +10,7 @@ const getConfig = () => {
 }
 
 const getAll = () => {
-  const request = axios.get(baseUrl, getConfig())
+  const request = axios.get(baseUrl)
   return request.then(response => response.data)
 }
 

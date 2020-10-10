@@ -1,22 +1,19 @@
 import React from 'react'
+import {ListItem, ListItemText} from '@material-ui/core'
 
 const Blog = ({ blog }) => {
   
 
-  const blogStyle = {
-    paddingTop: 10,
-    paddingLeft: 2,
-    border: 'solid',
-    borderWidth: 1,
-    marginBottom: 5
+  const ListItemLink = (props) => {
+    return <ListItem button component="a" {...props} />;
   }
 
-
   return (
-    <div style={blogStyle} className='blog'>
-      <a href={`/blogs/${blog.id}`}>{blog.title} {blog.author} </a> 
-    </div>
+    <ListItemLink href={`/blogs/${blog.id}`}>
+      <ListItemText primary={`${blog.title} ${blog.author}`}></ListItemText>
+    </ListItemLink>
   )
+
 }
 
 

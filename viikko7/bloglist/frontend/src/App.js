@@ -21,19 +21,12 @@ import {
 } from "react-router-dom"
 import {
   Container,
-  Table,
-  TableBody,
-  TableCell,
-  TableContainer,
-  TableRow,
-  Paper,
+  AppBar,
+  Toolbar,
   Button,
   TextField,
   List,
-  ListItem,
-  ListItemText
 } from '@material-ui/core'
-import { lightBlue } from '@material-ui/core/colors'
 
 
 
@@ -139,21 +132,20 @@ const App = () => {
     }
   }
 
-  const handleLogout = () => {
-    //tee reducerilla
-    dispatch(setUser(null))
-    storage.logoutUser()
-  }
 
   const userMatch = useRouteMatch('/users/:id')
-  const matchUser = userMatch 
-    ? users.find(u => user.id === (userMatch.params.id))
+  const matchUser = userMatch
+    ? users.find(u => u.id === (userMatch.params.id))
     : null
   const blogMatch = useRouteMatch('/blogs/:id')
   const matchBlog = blogMatch
     ? blogs.find(b => b.id === (blogMatch.params.id))
     : null
 
+  const handleLogout = () => {
+    dispatch(setUser(null))
+    storage.logoutUser()
+  }
 
   if ( !user ) {
     return (
@@ -193,6 +185,7 @@ const App = () => {
 
   const User = () => {
     if(!matchUser) {
+      console.log("no matchuser")
       return null
     }
     
@@ -201,11 +194,11 @@ const App = () => {
       <>
         <h2>{name}</h2>
         <b>added blogs</b>
-        <List>
+        <ul>
           {matchUser.blogs.map(blog => 
-            <ListItem key={blog.id}><ListItemText primary={blog.title} /></ListItem>
+            <li key={blog.id}> {blog.title} </li>
           )}
-        </List>
+        </ul>
       </>
     )
   }
@@ -217,6 +210,7 @@ const App = () => {
 
     return (
       <>
+        
         <h2>{matchBlog.title} {matchBlog.author}</h2>
         <a href={matchBlog.url}>{matchBlog.url}</a>
         <div>{matchBlog.likes} likes <button onClick={() => handleLike(matchBlog.id)}>like</button></div>
@@ -237,41 +231,42 @@ const App = () => {
 
   }
 
-  const padding = {
-    padding: 5
-  }
-
   return (
     <Container>
       <Router>
-        <div>
-          <Link style={padding} to="/">blogs</Link>
-          <Link style={padding} to="/users">users</Link>
-        </div>
-        <h2>blogs</h2>
+        <AppBar position="static">
+          <Toolbar>
+            <Button color="inherit" component={Link} to="/">
+              blogs
+            </Button>
+            <Button color="inherit" component={Link} to="/users">
+              users
+            </Button>   
+            <em>{user.name} logged in</em>     
+            <Button color="inherit" onClick={handleLogout}>
+              logout
+            </Button>         
+          </Toolbar>
+        </AppBar>
+    
 
         <Notification />
 
-        <p>
-          {user.name} logged in <button onClick={handleLogout}>logout</button>
-        </p>
-
         <Switch>
-          <Route path="/users/:id">
-            <User />
-          </Route>
-          <Route path="/users">
-            <Users users={users} />
-          </Route>
+          <Route path="/users/:id" render={() => <User />} />
+
+          <Route path="/users" render={() => <Users users={users} />} />
+
           <Route path="/blogs/:id">
             <BlogPage />
           </Route>        
           <Route path="/">
+            <h2>blogs</h2>
             <Togglable buttonLabel='create new blog'  ref={blogFormRef}>
               <NewBlog createBlog={createBlog} />
             </Togglable>
 
-        
+            <List>
             {blogs.sort(byLikes).map(blog =>
               <Blog
                 key={blog.id}
@@ -281,6 +276,7 @@ const App = () => {
                 own={user.username===blog.user.username}
               />
             )}
+            </List>
           </Route>
         </Switch>
       </Router>
