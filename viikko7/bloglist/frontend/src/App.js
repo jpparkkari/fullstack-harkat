@@ -214,7 +214,13 @@ const App = () => {
         <h2>{matchBlog.title} {matchBlog.author}</h2>
         <a href={matchBlog.url}>{matchBlog.url}</a>
         <div>{matchBlog.likes} likes <button onClick={() => handleLike(matchBlog.id)}>like</button></div>
-        <div>added by {matchBlog.author}</div>
+        <div>added by {matchBlog.author} </div>
+        <div>
+          {matchBlog.user.username === user.username ? 
+            <Button onClick={() => handleRemove(matchBlog.id)}>remove</Button> :
+            ''
+          }
+        </div>
         <h3>comments:</h3>
         <CommentForm 
           sendComment = {sendComment}
@@ -271,9 +277,6 @@ const App = () => {
               <Blog
                 key={blog.id}
                 blog={blog}
-                handleLike={handleLike}
-                handleRemove={handleRemove}
-                own={user.username===blog.user.username}
               />
             )}
             </List>
