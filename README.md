@@ -15,3 +15,6 @@
 * [Part 6](https://github.com/jpparkkari/fullstack-harkat/tree/master/viikko6)
    * [redux-anecdotes](https://github.com/jpparkkari/fullstack-harkat/tree/master/viikko6/redux-anecdotes)
    * [unicafe-redux](https://github.com/jpparkkari/fullstack-harkat/tree/master/viikko6/unicafe-redux)
+* [Part 7](https://github.com/jpparkkari/fullstack-harkat/tree/master/viikko7)
+   * [bloglist](https://github.com/jpparkkari/fullstack-harkat/tree/master/viikko7/bloglist)
+   * [routed-anecdotes](https://github.com/jpparkkari/fullstack-harkat/tree/master/viikko7/routed-anecdotes)
